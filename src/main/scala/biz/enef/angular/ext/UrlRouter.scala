@@ -99,90 +99,35 @@ trait UrlRouterProvider extends js.Object {
 
 }
 
-/**
- * Matches URLs against patterns and extracts named parameters from the path or the search part of the URL.
- * A URL pattern consists of a path pattern, optionally followed by '?' and a list of search parameters.
- * Multiple search parameter names are separated by '&'. Search parameters do not influence whether or not a URL is matched,
- * but their values are passed through into the matched parameters returned by exec.
- *
- * Path parameter placeholders can be specified using simple colon/catch-all syntax or curly brace syntax, which optionally
- * allows a regular expression for the parameter to be specified:
- *
- * - ':' name - colon placeholder
- * - '*' name - catch-all placeholder
- * - '{' name '}' - curly placeholder
- * - '{' name ':' regexp|type '}' - curly placeholder with regexp or type name. Should the regexp itself contain curly braces,
- *                                  they must be in matched pairs or escaped with a backslash.
- *
- * Parameter names may contain only word characters (latin letters, digits, and underscore) and must be unique within the pattern
- * (across both path and search parameters). For colon placeholders or curly placeholders without an explicit regexp, a path
- * parameter matches any number of characters other than '/'. For catch-all placeholders the path parameter matches any number of characters.
- */
-trait UrlMatcher extends js.Object {
+trait UrlRouterService {
+  /**
+   * Triggers an update; the same update that happens when the address bar
+   * url changes, aka $locationChangeSuccess.
+   *
+   * This method is useful when you need to use preventDefault() on the
+   * $locationChangeSuccess event, perform some custom logic (route protection,
+   * auth, config, redirection, etc) and then finally proceed with the transition
+   * by calling $urlRouter.sync().
+   */
+  def sync(): Unit = js.native
 
   /**
-   * A static prefix of this pattern. The matcher guarantees that any URL matching this matcher (i.e. any string for which
-   * exec() returns non-null) will start with this prefix.
+   * A URL generation method that returns the compiled URL for a given
+   * `UrlMatcher`, populated with the provided parameters.
+   *
+   * @param urlMatcher The `UrlMatcher` object which is used as the template of the URL to generate.
+   * @param params An object of parameter values to fill the matcher's required parameters.
+   * @param options Options for href()
+   * @return Returns the fully compiled URL, or `null` if `params` fail validation against `urlMatcher`
    */
-  val prefix: String = js.native
-
-  /** The pattern that was passed into the constructor */
-  val source: String = js.native
-
-  /** The path portion of the source property */
-  val sourcePath: String = js.native
-
-  /** The search portion of the source property */
-  val sourceSearch: String = js.native
-
-  /** The constructed regex that will be used to match against the url when it is time to determine which url will match. */
-  var regex: String = js.native
-
-  def concat(pattern: String): UrlMatcher = js.native
-  def exec(path: String, searchParams: js.Any): js.Any = js.native
-  def parameters(): js.Array[String] = js.native
-  def format(values: js.Any): String = js.native
+  def href(urlMatcher: UrlMatcher, params: UrlMatcherConfig, options: HrefOptions): String = js.native
 }
 
 /**
- * Configuration for UrlMatcher
- * @param caseInsensitive `true` if URL matching should be case insensitive, otherwise `false`, the default value (for backward compatibility) is `false`.
- * @param strict `false` if matching against a URL with a trailing slash should be treated as equivalent to a URL without a trailing slash, the default value is `true`.
+ *
+ * @param lossy
+ * @param inherit
+ * @param relative
+ * @param absolute If true will generate an absolute url, e.g. "http://www.example.com/fullurl".
  */
-class UrlMatcherConfig(caseInsensitive: Boolean = false, strict: Boolean = true) extends js.Object
-
-object UrlMatcher {
-
-  def apply(pattern: String, config: UrlMatcherConfig = null, parentMatcher: UrlMatcher = null): UrlMatcher = {
-    js.Dynamic.global.applyDynamic("UrlMatcher")(pattern, config, parentMatcher).asInstanceOf[UrlMatcher]
-  }
-}
-
-/*
-
-    interface IUrlMatcherFactory {
-        compile(pattern: string): IUrlMatcher;
-        isMatcher(o: any): boolean;
-    }
-
-    interface IHrefOptions {
-        lossy?: boolean;
-        inherit?: boolean;
-        relative?: IState;
-        absolute?: boolean;
-    }
-
-interface IUrlRouterService {
-        /*
-         * Triggers an update; the same update that happens when the address bar
-         * url changes, aka $locationChangeSuccess.
-         *
-         * This method is useful when you need to use preventDefault() on the
-         * $locationChangeSuccess event, perform some custom logic (route protection,
-         * auth, config, redirection, etc) and then finally proceed with the transition
-         * by calling $urlRouter.sync().
-         *
-         */
-        sync(): void;
-    }
- */
+class HrefOptions(lossy: Boolean, inherit: Boolean, relative: State, absolute: Boolean = false) {}
