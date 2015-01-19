@@ -22,13 +22,14 @@ object View {
   }
 }
 
-trait UiViewScrollProvider extends js.Object {
+/**
+ * $view service
+ */
+trait ViewService extends js.Object {
 
-
-  /*
-   * Reverts back to using the core $anchorScroll service for scrolling
-   * based on the url anchor.
+  /**
+   * $view.load('full.viewName', { template: ..., controller: ..., resolve: ..., async: false, params: ... })
    */
-  def useAnchorScroll(): Unit = js.native
+  def load(name: String, options: js.Dictionary[js.Any]) = js.native
 
 }

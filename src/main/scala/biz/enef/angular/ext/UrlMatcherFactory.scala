@@ -74,7 +74,7 @@ object UrlMatcher {
  *
  * The factory is also available to providers under the name $urlMatcherFactoryProvider.
  */
-trait UrlMatcherFactory {
+trait UrlMatcherFactory extends js.Object {
 
   /**
    * Defines whether URL matching should be case sensitive (the default behavior), or not.
@@ -138,7 +138,7 @@ trait UrlMatcherFactory {
  *
  * See  UrlMatcherFactory.defineType for more information on registering custom types.
  */
-trait Type {
+trait Type extends js.Object {
 
   /**
    * Detects whether a value is of a particular type. Accepts a native (decoded) value

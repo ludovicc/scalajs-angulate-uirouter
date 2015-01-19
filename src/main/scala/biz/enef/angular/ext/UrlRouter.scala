@@ -124,10 +124,14 @@ trait UrlRouterService {
 }
 
 /**
+ * Options for the href methods
  *
- * @param lossy
- * @param inherit
- * @param relative
+ * @param lossy {boolean=true} - If true, and if there is no url associated with the state provided in the
+  *    first parameter, then the constructed href url will be built from the first navigable ancestor (aka
+  *    ancestor with a valid url).
+ * @param inherit {boolean=true}, If `true` will inherit url parameters from current url.
+ * @param relative {object=$state.$current}, When transitioning with relative path (e.g '{{{^}}}'),
+  *    defines which state to be relative from.
  * @param absolute If true will generate an absolute url, e.g. "http://www.example.com/fullurl".
  */
-class HrefOptions(lossy: Boolean, inherit: Boolean, relative: State, absolute: Boolean = false) {}
+class HrefOptions(lossy: Boolean = true, inherit: Boolean = true, relative: State = js.native, absolute: Boolean = false) extends js.Object {}

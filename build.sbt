@@ -26,6 +26,6 @@ lazy val root = project.in(file(".")).
     name := "scalajs-angulate-uirouter",
     scalacOptions ++= angulateDebugFlags,
     libraryDependencies ++= Seq(
-      "biz.enef" %%% "scalajs-angulate" % "0.1-SNAPSHOT"
+      "biz.enef" %%% "scalajs-angulate" % "0.1"
     )
   )
