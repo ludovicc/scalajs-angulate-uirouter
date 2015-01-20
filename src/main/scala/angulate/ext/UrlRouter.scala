@@ -1,4 +1,4 @@
-package biz.enef.angular.ext
+package angulate.ext
 
 import scala.scalajs.js
 import scala.scalajs.js.RegExp
