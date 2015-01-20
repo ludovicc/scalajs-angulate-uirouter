@@ -30,6 +30,6 @@ trait ViewService extends js.Object {
   /**
    * $view.load('full.viewName', { template: ..., controller: ..., resolve: ..., async: false, params: ... })
    */
-  def load(name: String, options: js.Dictionary[js.Any]) = js.native
+  def load(name: String, options: js.Dictionary[js.Any]): Unit = js.native
 
 }

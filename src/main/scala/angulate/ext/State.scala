@@ -137,7 +137,7 @@ trait StateProvider extends js.Object {
 /**
  * State configuration
  */
-trait State extends js.Object {
+trait TypedState[T <: js.Object] extends js.Object {
   /**
    * A unique state name, e.g. "home", "about", "contacts". To create a parent/child state use a dot, e.g. "about.sales", "home.newest".
    */
@@ -367,7 +367,7 @@ trait State extends js.Object {
    *     requiredRole: 'foo'
    * }
    */
-  var data: js.Object = js.native
+  var data: T = js.native
 
   /**
    * If `false`, will not re-trigger the same state
@@ -378,9 +378,7 @@ trait State extends js.Object {
 
 }
 
-trait TypedState[T] extends State {
-  override var data: T = js.native
-}
+trait State extends TypedState[js.Object]
 
 object State {
 
@@ -391,36 +389,61 @@ object State {
 
   def apply(url: String, isAbstract: Boolean = false,
            template: String = "",
-           templateFn: js.Function1[js.Object, String] = js.native,
+           templateFn: js.Function1[js.Object, String] = null,
            templateUrl: String = "",
-           templateUrlFn: js.Function1[js.Object, String] = js.native,
-           templateProviderFn: js.Function = js.native,
-           templateProviderPromise: QPromise = js.native,
+           templateUrlFn: js.Function1[js.Object, String] = null,
+           templateProviderFn: js.Function = null,
+           templateProviderPromise: QPromise = null,
            controller: String = "",
-           controllerFn: js.Function = js.native,
-           controllerAs: String = js.native,
-           controllerProvider: js.Function = js.native,
-           resolve: js.Dictionary[js.Any] = js.native,
-           params: js.Dictionary[js.Any] = js.native,
+           controllerFn: js.Function = null,
+           controllerAs: String = "",
+           controllerProvider: js.Function = null,
+           resolve: js.Dictionary[js.Any] = js.Dictionary(),
+           params: js.Dictionary[js.Any] = js.Dictionary(),
            views: Map[String, View] = Map.empty,
-           onEnter: js.Function = js.native,
-           onExit: js.Function = js.native,
+           onEnter: js.Function = null,
+           onExit: js.Function = null,
            reloadOnSearch: Boolean = true,
-           data: js.Object = js.native): State = {
+           data: js.Object = null): State = {
+
+    typed[js.Object](url, isAbstract, template, templateFn, templateUrl, templateUrlFn,
+                     templateProviderFn, templateProviderPromise, controller, controllerFn, controllerAs, controllerProvider,
+                     resolve, params,views, onEnter, onExit, reloadOnSearch, data).asInstanceOf[State]
+  }
+
+  def typed[T <: js.Object](url: String, isAbstract: Boolean = false,
+           template: String = "",
+           templateFn: js.Function1[js.Object, String] = null,
+           templateUrl: String = "",
+           templateUrlFn: js.Function1[js.Object, String] = null,
+           templateProviderFn: js.Function = null,
+           templateProviderPromise: QPromise = null,
+           controller: String = "",
+           controllerFn: js.Function = null,
+           controllerAs: String = "",
+           controllerProvider: js.Function = null,
+           resolve: js.Dictionary[js.Any] = js.Dictionary(),
+           params: js.Dictionary[js.Any] = js.Dictionary(),
+           views: Map[String, View] = Map.empty,
+           onEnter: js.Function = null,
+           onExit: js.Function = null,
+           reloadOnSearch: Boolean = true,
+           data: T = null): TypedState[T] = {
 
     val out = literal(url = url, `abstract` = isAbstract, template = template, templateUrl = templateUrl,
                       templateProvider = templateProviderFn, controller = controller, controllerAs = controllerAs,
                       controllerProvider = controllerProvider, resolve = resolve, params = params, onEnter = onEnter, onExit = onExit,
-                      reloadOnSearch = reloadOnSearch, data = data).asInstanceOf[State]
+                      reloadOnSearch = reloadOnSearch, data = data).asInstanceOf[TypedState[T]]
 
-    if (templateFn != js.native) out.template = templateFn
-    else if (templateUrlFn != js.native) out.templateUrl = templateUrl
-    else if (templateProviderPromise != js.native) out.templateProvider = templateProviderPromise
-    if (controllerFn != js.native) out.controller = controllerFn
+    if (templateFn != null) out.template = templateFn
+    else if (templateUrlFn != null) out.templateUrl = templateUrl
+    else if (templateProviderPromise != null) out.templateProvider = templateProviderPromise
+    if (controllerFn != null) out.controller = controllerFn
+    if (views.nonEmpty) out.views = views.toJSDictionary
 
-    if (!views.isEmpty) out.views = views.toJSDictionary
     out
   }
+
 }
 
 trait StateOptions extends js.Object {
@@ -429,7 +452,7 @@ trait StateOptions extends js.Object {
    * {boolean=true|string=} - If `true` will update the url in the location bar, if `false`
    * will not. If string, must be `"replace"`, which will update url and also replace last history record.
    */
-  var `location?`: js.Any
+  var `location?`: js.Any = js.native
 
   /**
    * {boolean=true}, If `true` will inherit url parameters from current url.
@@ -459,12 +482,12 @@ object StateOptions {
 
   import js.Dynamic.literal
 
-  def apply(location: Boolean = true, locationStr: String = js.native, inherit: Boolean = true,
-             relative: State = js.native, notify : Boolean = true, reload : Boolean = false): StateOptions = {
+  def apply(location: Boolean = true, locationStr: String = "", inherit: Boolean = true,
+             relative: State = null, notify : Boolean = true, reload : Boolean = false): StateOptions = {
 
     val out = literal(location = location, inherit = inherit, relative = relative, notify = notify, reload = reload).asInstanceOf[StateOptions]
 
-    if (locationStr != js.native) out.`location?` = locationStr
+    if (locationStr != "") out.`location?` = locationStr
     out
   }
 }
@@ -671,7 +694,7 @@ trait StateService extends js.Object {
    *
    * @return Returns true if it does include the state
    */
-  def includes(state: State, params: js.Dictionary[js.Any] = js.Dictionary(), options: CheckStateOptions = js.native): Boolean = js.native
+  def includes(state: State, params: js.Dictionary[js.Any], options: CheckStateOptions): Boolean = js.native
 
   /**
    * Similar to [[StateService.includes()]] but only checks for the full state name. If params is supplied then it will be
@@ -725,7 +748,7 @@ trait StateService extends js.Object {
    *
    * @return Returns true if it is the state.
    */
-  def is(state: State, params: js.Dictionary[js.Any] = js.Dictionary(), options: CheckStateOptions = js.native): Boolean = js.native
+  def is(state: State, params: js.Dictionary[js.Any], options: CheckStateOptions): Boolean = js.native
 
   /**
    * A url generation method that returns the compiled url for the given state populated with the given params.
@@ -738,7 +761,7 @@ trait StateService extends js.Object {
    * @param options The Href options
    * @return compiled state url
    */
-  def href(state: State, params: js.Dictionary[js.Any] = js.Dictionary(), options: HrefOptions): String = js.native
+  def href(state: State, params: js.Dictionary[js.Any], options: HrefOptions): String = js.native
 
   /**
    * A url generation method that returns the compiled url for the given state populated with the given params.
@@ -785,7 +808,7 @@ trait StateService extends js.Object {
    * @param context When state is a relative state reference, the state will be retrieved relative to context.
    * @return State configuration object
    */
-  def get(state: String, context: State = js.native): State = js.native
+  def get(state: String, context: State): State = js.native
 
   /**
    * A reference to the state's config object. However you passed it in. Useful for accessing custom data.

@@ -23,14 +23,14 @@ trait Template extends js.Object {
 object Template {
   import js.Dynamic.literal
 
-  def apply(template: String = js.native, templateFn: js.Function = js.native,
-            templateUrl: String = js.native, templateUrlFn: js.Function = js.native,
-            templateProvider: js.Function = js.native): Template = {
+  def apply(template: String = "", templateFn: js.Function = null,
+            templateUrl: String = "", templateUrlFn: js.Function = null,
+            templateProvider: js.Function = null): Template = {
 
     val out = literal(template = template, templateFn = templateFn, templateProvider = templateProvider).asInstanceOf[Template]
 
-    if (templateFn != js.native) out.template = templateFn
-    else if (templateUrlFn != js.native) out.templateUrl = templateUrlFn
+    if (templateFn != null) out.template = templateFn
+    else if (templateUrlFn != null) out.templateUrl = templateUrlFn
 
     out
   }
@@ -71,7 +71,7 @@ trait TemplateFactory extends js.Object {
    *
    * @return {string|object} The template html as a string, or a promise for that string.
    */
-  def fromString(template: js.Function, params: js.Dictionary[js.Any] = js.Dictionary()): js.Any = js.native
+  def fromString(template: js.Function, params: js.Dictionary[js.Any]): js.Any = js.native
 
   /**
    * Loads a template from the a URL via `$http` and `$templateCache`.
@@ -89,7 +89,7 @@ trait TemplateFactory extends js.Object {
    * @param params Parameters to pass to the url function.
    * @return {string|Promise.<string>} The template html as a string, or a promise for that string.
    */
-  def fromUrl(url: js.Function, params: js.Dictionary[js.Any] = js.Dictionary()): js.Any = js.native
+  def fromUrl(url: js.Function, params: js.Dictionary[js.Any]): js.Any = js.native
 
   /**
    * Creates a template by invoking an injectable provider function.

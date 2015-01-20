@@ -99,7 +99,7 @@ trait UrlRouterProvider extends js.Object {
 
 }
 
-trait UrlRouterService {
+trait UrlRouterService extends js.Object{
   /**
    * Triggers an update; the same update that happens when the address bar
    * url changes, aka $locationChangeSuccess.
