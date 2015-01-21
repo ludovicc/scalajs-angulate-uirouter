@@ -1,4 +1,4 @@
-package angulate.ext
+package angulate.uirouter
 
 import scalajs.js
 

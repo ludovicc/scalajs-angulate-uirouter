@@ -1,4 +1,4 @@
-package angulate.ext
+package angulate.uirouter
 
 import scala.scalajs.js
 import scala.scalajs.js.RegExp

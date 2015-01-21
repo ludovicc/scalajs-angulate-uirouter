@@ -1,4 +1,4 @@
-package angulate.ext
+package angulate.uirouter
 
 import biz.enef.angular.core.QPromise
 
