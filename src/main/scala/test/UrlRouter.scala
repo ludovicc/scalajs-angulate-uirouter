@@ -99,6 +99,9 @@ trait UrlRouterProvider extends js.Object {
 
 }
 
+/**
+ * $urlRouter service
+ */
 trait UrlRouterService extends js.Object{
   /**
    * Triggers an update; the same update that happens when the address bar

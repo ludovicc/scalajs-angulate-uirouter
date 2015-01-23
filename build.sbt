@@ -1,3 +1,4 @@
+
 name := "scalajs-angulate-uirouter"
 
 val commonSettings = Seq(
@@ -9,9 +10,9 @@ val commonSettings = Seq(
 )
 
 val angulateDebugFlags = Seq(
-  "runtimeLogging"
-  //"ModuleMacros.debug",
-  //"ControllerMacros.debug"
+  "runtimeLogging",
+  "ModuleMacros.debug",
+  "ControllerMacros.debug"
   //"DirectiveMacros.debug"
   //"ServiceMacros.debug"
   //"HttpPromiseMacros.debug"
@@ -28,4 +29,19 @@ lazy val root = project.in(file(".")).
     libraryDependencies ++= Seq(
       "biz.enef" %%% "scalajs-angulate" % "0.1"
     )
+  )
+
+lazy val tests = project.
+  dependsOn(root).
+  enablePlugins(ScalaJSPlugin).
+  settings(commonSettings: _*).
+  settings(utest.jsrunner.Plugin.utestJsSettings: _*).
+  settings(
+    publish := {},
+    scalacOptions ++= angulateDebugFlags,
+    scalaJSStage := FastOptStage,
+    jsDependencies += RuntimeDOM,
+    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js" % "test",
+    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-mocks.js" % "test",
+    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js" % "test"
   )
