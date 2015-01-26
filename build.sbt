@@ -23,8 +23,9 @@ lazy val root = project.in(file(".")).
   settings(commonSettings: _*).
   //settings(publishingSettings: _*).
   //settings(sonatypeSettings: _*).
-  settings( 
+  settings(
     name := "scalajs-angulate-uirouter",
+    normalizedName := "scalajs-angulate-uirouter",
     scalacOptions ++= angulateDebugFlags,
     libraryDependencies ++= Seq(
       "biz.enef" %%% "scalajs-angulate" % "0.1"

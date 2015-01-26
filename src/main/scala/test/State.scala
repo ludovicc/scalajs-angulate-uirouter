@@ -388,18 +388,18 @@ object State {
   // TODO:need macro to annotate onEnter and onExit functions
 
   def apply(url: String, isAbstract: Boolean = false,
-           template: String = "",
+           template: String = null,
            templateFn: js.Function1[js.Object, String] = null,
-           templateUrl: String = "",
+           templateUrl: String = null,
            templateUrlFn: js.Function1[js.Object, String] = null,
            templateProviderFn: js.Function = null,
            templateProviderPromise: QPromise = null,
-           controller: String = "",
+           controller: String = null,
            controllerFn: js.Function = null,
-           controllerAs: String = "",
+           controllerAs: String = null,
            controllerProvider: js.Function = null,
-           resolve: js.Dictionary[js.Any] = js.Dictionary(),
-           params: js.Dictionary[js.Any] = js.Dictionary(),
+           resolve: js.Dictionary[js.Any] = null,
+           params: js.Dictionary[js.Any] = null,
            views: Map[String, View] = Map.empty,
            onEnter: js.Function = null,
            onExit: js.Function = null,
@@ -412,36 +412,48 @@ object State {
   }
 
   def typed[T <: js.Object](url: String, isAbstract: Boolean = false,
-           template: String = "",
+           template: String = null,
            templateFn: js.Function1[js.Object, String] = null,
-           templateUrl: String = "",
+           templateUrl: String = null,
            templateUrlFn: js.Function1[js.Object, String] = null,
            templateProviderFn: js.Function = null,
            templateProviderPromise: QPromise = null,
-           controller: String = "",
+           controller: String = null,
            controllerFn: js.Function = null,
-           controllerAs: String = "",
+           controllerAs: String = null,
            controllerProvider: js.Function = null,
-           resolve: js.Dictionary[js.Any] = js.Dictionary(),
-           params: js.Dictionary[js.Any] = js.Dictionary(),
-           views: Map[String, View] = Map.empty,
+           resolve: js.Dictionary[js.Any] = null,
+           params: js.Dictionary[js.Any] = null,
+           views: Map[String, View] = null,
            onEnter: js.Function = null,
            onExit: js.Function = null,
            reloadOnSearch: Boolean = true,
            data: T = null): TypedState[T] = {
 
-    val out = literal(url = url, `abstract` = isAbstract, template = template, templateUrl = templateUrl,
-                      templateProvider = templateProviderFn, controller = controller, controllerAs = controllerAs,
-                      controllerProvider = controllerProvider, resolve = resolve, params = params, onEnter = onEnter, onExit = onExit,
-                      reloadOnSearch = reloadOnSearch, data = data).asInstanceOf[TypedState[T]]
+    val out = literal(url = url)
+    if (isAbstract) out.`abstract` = true
 
-    if (templateFn != null) out.template = templateFn
+    if (template != null) out.template = template
+    else if (templateFn != null) out.template = templateFn
+    if (templateUrl != null) out.templateUrl = templateUrl
     else if (templateUrlFn != null) out.templateUrl = templateUrl
+    if (templateProviderFn != null) out.templateProvider = templateProviderFn
     else if (templateProviderPromise != null) out.templateProvider = templateProviderPromise
-    if (controllerFn != null) out.controller = controllerFn
-    if (views.nonEmpty) out.views = views.toJSDictionary
 
-    out
+    if (controller != null) out.controller = controller
+    else if (controllerFn != null) out.controller = controllerFn
+    if (controllerAs != null) out.controllerAs = controllerAs
+    if (controllerProvider != null) out.controllerProvider = controllerProvider
+
+    if (resolve != null) out.resolve = resolve
+    if (params != null) out.params = params
+    if (views != null) out.views = views.toJSDictionary
+    if (onEnter != null) out.onEnter = onEnter
+    if (onExit != null) out.onExit = onExit
+    if (!reloadOnSearch) out.reloadOnSearch = reloadOnSearch
+    if (data != null) out.data = data
+
+    out.asInstanceOf[TypedState[T]]
   }
 
 }
@@ -834,15 +846,3 @@ trait StateService extends js.Object {
    */
   def reload(): QPromise = js.native
 }
-
-/*
-
-
-    interface IStateParamsService {
-        [key: string]: any;
-    }
-
-    interface IStateParams {
-        [key: string]: any;
-    }
-*/
