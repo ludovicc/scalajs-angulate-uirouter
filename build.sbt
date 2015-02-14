@@ -28,7 +28,7 @@ lazy val root = project.in(file(".")).
     normalizedName := "scalajs-angulate-uirouter",
     scalacOptions ++= angulateDebugFlags,
     libraryDependencies ++= Seq(
-      "biz.enef" %%% "scalajs-angulate" % "0.1"
+      "biz.enef" %%% "scalajs-angulate" % "0.2-SNAPSHOT"
     )
   )
 
@@ -36,13 +36,20 @@ lazy val tests = project.
   dependsOn(root).
   enablePlugins(ScalaJSPlugin).
   settings(commonSettings: _*).
-  settings(utest.jsrunner.Plugin.utestJsSettings: _*).
   settings(
     publish := {},
+    publishLocal := {},
     scalacOptions ++= angulateDebugFlags,
     scalaJSStage := FastOptStage,
+    //jsEnv in Test := PhantomJSEnv("phantomjs" , Seq("--remote-debugger-port=9000")).value,
+    jsEnv in Test := PhantomJSEnv().value,
+    testFrameworks += new TestFramework("utest.runner.Framework"),
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "utest" % "0.3.0" % "test",
+      "com.lihaoyi" %%% "scalatags" % "0.4.4"),
     jsDependencies += RuntimeDOM,
-    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js" % "test",
-    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-mocks.js" % "test",
-    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js" % "test"
+    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js",
+    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-locale_en.js" dependsOn "angular.min.js",
+    //jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-mocks.js" dependsOn "angular.min.js",
+    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js"
   )
