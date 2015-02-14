@@ -74,7 +74,7 @@ trait TemplateFactory extends js.Object {
   def fromString(template: js.Function, params: js.Dictionary[js.Any]): js.Any = js.native
 
   /**
-   * Loads a template from the a URL via `$http` and `$templateCache`.
+   * Loads a template from the a URL via `\$http` and `\$templateCache`.
    *
    * @param url url of the template to load.
    * @param params Parameters to pass to the url function.
@@ -83,7 +83,7 @@ trait TemplateFactory extends js.Object {
   def fromUrl(url: String, params: js.Dictionary[js.Any] = js.Dictionary()): js.Any = js.native
 
   /**
-   * Loads a template from the a URL via `$http` and `$templateCache`.
+   * Loads a template from the a URL via `\$http` and `\$templateCache`.
    *
    * @param url a function that returns a url.
    * @param params Parameters to pass to the url function.
@@ -94,7 +94,7 @@ trait TemplateFactory extends js.Object {
   /**
    * Creates a template by invoking an injectable provider function.
    *
-   * @param provider Function to invoke via `$injector.invoke`
+   * @param provider Function to invoke via `\$injector.invoke`
    * @param params Parameters for the template.
    * @param locals Locals to pass to `invoke`. Defaults to `{ params: params }`.
    * @return {string|QPromise[string]} The template html as a string, or a promise for that string.

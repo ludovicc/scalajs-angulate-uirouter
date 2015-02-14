@@ -1,13 +1,12 @@
 package test
 
-import biz.enef.angular.{Controller, Scope, Module, Angular}
-import utest._
+import biz.enef.angular.{ Scope, Module, Angular}
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 import js.Dynamic.literal
 
-trait UIRouterTestSuite extends TestSuite {
+object TestHelpers {
 
   /**
    * Returns the dependency with the specified name from the (implicitly) specified module.
@@ -18,7 +17,7 @@ trait UIRouterTestSuite extends TestSuite {
    * @return
    */
   def injection[T](name: String)(implicit module: Module) : T =
-    Angular().injector(js.Array("ng",module.name)).get(name).asInstanceOf[T]
+    Angular().injector(js.Array("ng","ui.router",module.name)).get(name).asInstanceOf[T]
 
   /**
    * Checks that the specified value is neither null nor undefined.

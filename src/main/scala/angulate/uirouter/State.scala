@@ -1,5 +1,6 @@
 package angulate.uirouter
 
+import biz.enef.angular.AnnotatedFunction
 import biz.enef.angular.core.QPromise
 
 import scala.scalajs.js
@@ -12,8 +13,8 @@ import scala.scalajs.js.annotation.JSBracketAccess
 // MIT license
 
 /**
- * The $stateParams service is an object that will have one key per url parameter.
- * The $stateParams is a perfect way to provide your controllers or other services with
+ * The \$stateParams service is an object that will have one key per url parameter.
+ * The \$stateParams is a perfect way to provide your controllers or other services with
  * the individual parts of the navigated url.
  *
  * If you had a url on your state of:
@@ -24,7 +25,7 @@ import scala.scalajs.js.annotation.JSBracketAccess
  *
  * '/users/123/details//0'
  *
- * Your $stateParams object would be
+ * Your \$stateParams object would be
  *
  * { id:'123', type:"", repeat:'0' }
  *
@@ -32,15 +33,15 @@ import scala.scalajs.js.annotation.JSBracketAccess
  *
  * '/users/123/details/default/0?from=there&to=here'
  *
- * Your $stateParams object would be
+ * Your \$stateParams object would be
  *
  * { id:'123', type:'default', repeat:'0', from:'there', to:'here' }
  */
 trait StateParams extends js.Object {
   /**
    * Get the parameter value from its name.<br/>
-   * If you have a $stateParams object { id:'123', type:'default', repeat:'0', from:'there', to:'here' },
-   * then to get the value of the "type" key, you should call $stateParams("type").
+   * If you have a \$stateParams object { id:'123', type:'default', repeat:'0', from:'there', to:'here' },
+   * then to get the value of the "type" key, you should call \$stateParams("type").
    */
   @JSBracketAccess
   def apply(key: String): js.Any = js.native
@@ -49,13 +50,13 @@ trait StateParams extends js.Object {
 }
 
 /**
- * The $stateProvider works similar to Angular's v1 router, but it focuses purely on state.
+ * The \$stateProvider works similar to Angular's v1 router, but it focuses purely on state.
  *
  * A state corresponds to a "place" in the application in terms of the overall UI and navigation.
  * A state describes (via the controller / template / view properties) what the UI looks like and does at that place.
  * States often have things in common, and the primary way of factoring out these commonalities in this model is via the state hierarchy, i.e. parent/child states aka nested states.
  *
- * The `$stateProvider` provides interfaces to declare these states for your app.
+ * The `\$stateProvider` provides interfaces to declare these states for your app.
  */
 trait StateProvider extends js.Object {
 
@@ -77,7 +78,7 @@ trait StateProvider extends js.Object {
 
   /**
    * Allows you to extend (carefully) or override (at your own peril) the
-   * `stateBuilder` object used internally by `$stateProvider`. This can be used
+   * `stateBuilder` object used internally by `\$stateProvider`. This can be used
    * to add custom functionality to ui-router, for example inferring templateUrl
    * based on the state name.
    *
@@ -89,7 +90,7 @@ trait StateProvider extends js.Object {
    *
    * In addition, users can attach custom decorators, which will generate new
    * properties within the state's internal definition. There is currently no clear
-   * use-case for this beyond accessing internal states (i.e. $state.$current),
+   * use-case for this beyond accessing internal states (i.e. \$state.\$current),
    * however, expect this to become increasingly relevant as we introduce additional
    * meta-programming features.
    *
@@ -120,7 +121,7 @@ trait StateProvider extends js.Object {
    * - **path** `{string}` - returns the full path from the root down to this state.
    *   Needed for state activation.
    * - **includes** `{object}` - returns an object that includes every state that
-   *   would pass a `$state.includes()` test.
+   *   would pass a `\$state.includes()` test.
    *
    * @param name The name of the builder function to decorate.
    * @param decorator A function that is responsible for decorating the original
@@ -129,7 +130,7 @@ trait StateProvider extends js.Object {
    *   - `{object}` - state - The state config object.
    *   - `{object}` - super - The original builder function.
    *
-   * @return $stateProvider instance
+   * @return \$stateProvider instance
    */
   def decorator(name: String, decorator: js.Function2[State, js.Function, Any] = js.native): StateProvider = js.native
 }
@@ -149,7 +150,7 @@ trait TypedState[T <: js.Object] extends js.Object {
    *
    * If `template` is a function, it will be called with the following parameters:
    *
-   *   - params: state parameters extracted from the current $location.path() by
+   *   - params: state parameters extracted from the current \$location.path() by
    *     applying the current state
    */
   var template: js.Object = js.native // string || (params: js.Object) => string
@@ -159,7 +160,7 @@ trait TypedState[T <: js.Object] extends js.Object {
    *
    * If `templateUrl` is a function, it will be called with the following parameters:
    *
-   *   - params: state parameters extracted from the current $location.path() by
+   *   - params: state parameters extracted from the current \$location.path() by
    *     applying the current state
    *
    */
@@ -175,10 +176,13 @@ trait TypedState[T <: js.Object] extends js.Object {
    * related scope or the name of a registered controller if passed as a string.
    * Optionally, the ControllerAs may be declared here.
    *
+   *
+   * <pre>
    *  controller: "MyRegisteredController"
    *  controller: "MyRegisteredController as fooCtrl"
-   *  controller: function($scope, MyService) {
-   *     $scope.data = MyService.getData(); }
+   *  controller: function(\$scope, MyService) {
+   *     \$scope.data = MyService.getData(); }
+   * </pre>
    */
   var controller: js.Any = js.native
 
@@ -190,16 +194,18 @@ trait TypedState[T <: js.Object] extends js.Object {
   /**
    * Injectable provider function that returns the actual controller or string.
    *
+   * <pre>
    * controllerProvider:
    *   function(MyResolveData) {
    *     if (MyResolveData.foo)
    *       return "FooCtrl"
    *     else if (MyResolveData.bar)
    *       return "BarCtrl";
-   *     else return function($scope) {
-   *       $scope.baz = "Qux";
+   *     else return function(\$scope) {
+   *       \$scope.baz = "Qux";
    *     }
    *   }
+   * </pre>
    */
   var controllerProvider: js.Function = js.native
 
@@ -207,9 +213,9 @@ trait TypedState[T <: js.Object] extends js.Object {
    * An optional map[string, function] of dependencies which
    * should be injected into the controller. If any of these dependencies are promises,
    * the router will wait for them all to be resolved before the controller is instantiated.
-   * If all the promises are resolved successfully, the $stateChangeSuccess event is fired
+   * If all the promises are resolved successfully, the \$stateChangeSuccess event is fired
    * and the values of the resolved promises are injected into any controllers that reference them.
-   * If any  of the promises are rejected the $stateChangeError event is fired.
+   * If any  of the promises are rejected the \$stateChangeError event is fired.
    *
    * The map object is:
    *
@@ -220,8 +226,8 @@ trait TypedState[T <: js.Object] extends js.Object {
    *
    * resolve: {
    *     myResolve1:
-   *       function($http, $stateParams) {
-   *         return $http.get("/api/foos/"+stateParams.fooID);
+   *       function(\$http, \$stateParams) {
+   *         return \$http.get("/api/foos/"+stateParams.fooID);
    *       }
    *     }
    */
@@ -229,7 +235,7 @@ trait TypedState[T <: js.Object] extends js.Object {
 
   /**
    * A url fragment with optional parameters. When a state is navigated or
-   * transitioned to, the `$stateParams` service will be populated with any
+   * transitioned to, the `\$stateParams` service will be populated with any
    * parameters that were passed.
    *
    * Examples:
@@ -339,8 +345,8 @@ trait TypedState[T <: js.Object] extends js.Object {
    * If minifying your scripts, make sure to explicitly annotate this function,
    * because it won't be automatically annotated by your build tools.
    *
-   * onEnter: function(MyService, $stateParams) {
-   *     MyService.foo($stateParams.myParam);
+   * onEnter: function(MyService, \$stateParams) {
+   *     MyService.foo(\$stateParams.myParam);
    * }
    *
    */
@@ -352,8 +358,8 @@ trait TypedState[T <: js.Object] extends js.Object {
    * If minifying your scripts, make sure to explicitly annotate this function,
    * because it won't be automatically annotated by your build tools.
    *
-   * onExit: function(MyService, $stateParams) {
-   *     MyService.cleanup($stateParams.myParam);
+   * onExit: function(MyService, \$stateParams) {
+   *     MyService.cleanup(\$stateParams.myParam);
    * }
    */
   var onExit: js.Function = js.native
@@ -371,8 +377,8 @@ trait TypedState[T <: js.Object] extends js.Object {
 
   /**
    * If `false`, will not re-trigger the same state
-   * just because a search/query parameter has changed (via $location.search() or $location.hash()).
-   * Useful for when you'd like to modify $location.search() without triggering a reload.
+   * just because a search/query parameter has changed (via \$location.search() or \$location.hash()).
+   * Useful for when you'd like to modify \$location.search() without triggering a reload.
    */
   var reloadOnSearch: Boolean = js.native
 
@@ -384,8 +390,6 @@ object State {
 
   import js.Dynamic.literal
   import js.JSConverters._
-
-  // TODO:need macro to annotate onEnter and onExit functions
 
   def apply(url: String, isAbstract: Boolean = false,
            template: String = null,
@@ -401,8 +405,8 @@ object State {
            resolve: js.Dictionary[js.Any] = null,
            params: js.Dictionary[js.Any] = null,
            views: Map[String, View] = Map.empty,
-           onEnter: js.Function = null,
-           onExit: js.Function = null,
+           onEnter: AnnotatedFunction = null,
+           onExit: AnnotatedFunction = null,
            reloadOnSearch: Boolean = true,
            data: js.Object = null): State = {
 
@@ -425,8 +429,8 @@ object State {
            resolve: js.Dictionary[js.Any] = null,
            params: js.Dictionary[js.Any] = null,
            views: Map[String, View] = null,
-           onEnter: js.Function = null,
-           onExit: js.Function = null,
+           onEnter: AnnotatedFunction = null,
+           onExit: AnnotatedFunction = null,
            reloadOnSearch: Boolean = true,
            data: T = null): TypedState[T] = {
 
@@ -448,8 +452,8 @@ object State {
     if (resolve != null) out.resolve = resolve
     if (params != null) out.params = params
     if (views != null) out.views = views.toJSDictionary
-    if (onEnter != null) out.onEnter = onEnter
-    if (onExit != null) out.onExit = onExit
+    if (onEnter != null) out.onEnter = onEnter.inlineArrayAnnotatedFn
+    if (onExit != null) out.onExit = onExit.inlineArrayAnnotatedFn
     if (!reloadOnSearch) out.reloadOnSearch = reloadOnSearch
     if (data != null) out.data = data
 
@@ -472,13 +476,13 @@ trait StateOptions extends js.Object {
   var `inherit?`: Boolean = js.native
 
   /**
-   * {object=$state.$current}, When transitioning with relative path (e.g '{{{^}}}'),
+   * {object=\$state.\$current}, When transitioning with relative path (e.g '{{{^}}}'),
    *    defines which state to be relative from.
    */
   var `relative?`: State = js.native
 
   /**
-   * {boolean=true}, If `true` will broadcast $stateChangeStart and $stateChangeSuccess events.
+   * {boolean=true}, If `true` will broadcast \$stateChangeStart and \$stateChangeSuccess events.
    */
   var `notify?`: Boolean = js.native
 
@@ -525,15 +529,15 @@ object CheckStateOptions {
 }
 
 /**
- * Error values of the promise returned by one of the $state [[StateService]] methods.
+ * Error values of the promise returned by one of the \$state [[StateService]] methods.
  */
 object StateTransitionRejection {
 
   /** when a newer transition has been started after this one */
   val transitionSuperseded = "transition superseded"
-  /** when `event.preventDefault()` has been called in a `$stateChangeStart` listener */
+  /** when `event.preventDefault()` has been called in a `\$stateChangeStart` listener */
   val transitionPrevented = "transition prevented"
-  /** when `event.preventDefault()` has been called in a `$stateNotFound` listener or when a `$stateNotFound` `event.retry` promise errors. */
+  /** when `event.preventDefault()` has been called in a `\$stateNotFound` listener or when a `\$stateNotFound` `event.retry` promise errors. */
   val transitionAborted = "transition aborted"
   /** when a state has been unsuccessfully found after 2 tries. */
   val transitionFailed = "transition failed"
@@ -542,16 +546,16 @@ object StateTransitionRejection {
 
 }
 /**
- * `$state` service is responsible for representing states as well as transitioning
+ * `\$state` service is responsible for representing states as well as transitioning
  * between them. It also provides interfaces to ask for current state or even states
  * you're coming from.
  */
 trait StateService extends js.Object {
 
   /**
-   * Convenience method for transitioning to a new state. `$state.go` calls
-   * `$state.transitionTo` internally but automatically sets options to
-   * `{ location: true, inherit: true, relative: $state.$current, notify: true }`.
+   * Convenience method for transitioning to a new state. `\$state.go` calls
+   * `\$state.transitionTo` internally but automatically sets options to
+   * `{ location: true, inherit: true, relative: \$state.\$current, notify: true }`.
    * This allows you to easily use an absolute or relative to path and specify
    * only the parameters you'd like to update (while letting unspecified parameters
    * inherit from the currently active ancestor states).
@@ -559,21 +563,21 @@ trait StateService extends js.Object {
    * Example:
    * var app = angular.module('app', ['ui.router']);
    *
-   * app.controller('ctrl', function ($scope, $state) {
-   *   $scope.changeState = function () {
-   *     $state.go('contact.detail');
+   * app.controller('ctrl', function (\$scope, \$state) {
+   *   \$scope.changeState = function () {
+   *     \$state.go('contact.detail');
    *   };
    * });
    *
    * @param to Absolute state name or relative state path. Some examples:
    *
-   * - `$state.go('contact.detail')` - will go to the `contact.detail` state
-   * - `$state.go('^')` - will go to a parent state
-   * - `$state.go('^.sibling')` - will go to a sibling state
-   * - `$state.go('.child.grandchild')` - will go to grandchild state
+   * - `\$state.go('contact.detail')` - will go to the `contact.detail` state
+   * - `\$state.go('^')` - will go to a parent state
+   * - `\$state.go('^.sibling')` - will go to a sibling state
+   * - `\$state.go('.child.grandchild')` - will go to grandchild state
    *
    * @param params A map of the parameters that will be sent to the state,
-   * will populate $stateParams. Any parameters that are not specified will be inherited from currently
+   * will populate \$stateParams. Any parameters that are not specified will be inherited from currently
    * defined parameters. This allows, for example, going to a sibling state that shares parameters
    * specified in a parent state. Parameter inheritance only works between common ancestor states, I.e.
    * transitioning to a sibling will get you the parameters for all parents, transitioning to a child
@@ -589,9 +593,9 @@ trait StateService extends js.Object {
    * Possible rejection values:
    *
    * - 'transition superseded' - when a newer transition has been started after this one
-   * - 'transition prevented' - when `event.preventDefault()` has been called in a `$stateChangeStart` listener
-   * - 'transition aborted' - when `event.preventDefault()` has been called in a `$stateNotFound` listener or
-   *   when a `$stateNotFound` `event.retry` promise errors.
+   * - 'transition prevented' - when `event.preventDefault()` has been called in a `\$stateChangeStart` listener
+   * - 'transition aborted' - when `event.preventDefault()` has been called in a `\$stateNotFound` listener or
+   *   when a `\$stateNotFound` `event.retry` promise errors.
    * - 'transition failed' - when a state has been unsuccessfully found after 2 tries.
    * - *resolve error* - when an error has occurred with a `resolve`
    */
@@ -599,16 +603,18 @@ trait StateService extends js.Object {
 
   /**
    * Low-level method for transitioning to a new state.
-   * [[StateService.go()]] uses `transitionTo` internally. `$state.go` is recommended in most situations.
+   * [[StateService.go()]] uses `transitionTo` internally. `\$state.go` is recommended in most situations.
    *
    * Example:
+   * <pre>
    * var app = angular.module('app', ['ui.router']);
    *
-   * app.controller('ctrl', function ($scope, $state) {
-   *   $scope.changeState = function () {
-   *     $state.transitionTo('contact.detail');
+   * app.controller('ctrl', function (\$scope, \$state) {
+   *   \$scope.changeState = function () {
+   *     \$state.transitionTo('contact.detail');
    *   };
    * });
+   * </pre>
    *
    * @param to State name.
    * @param toParams A map of the parameters that will be sent to the state,
@@ -626,29 +632,33 @@ trait StateService extends js.Object {
    * Example:
    * Partial and relative names
    *
-   * $state.$current.name = 'contacts.details.item';
+   * <pre>
+   * \$state.\$current.name = 'contacts.details.item';
    *
    * // Using partial names
-   * $state.includes("contacts"); // returns true
-   * $state.includes("contacts.details"); // returns true
-   * $state.includes("contacts.details.item"); // returns true
-   * $state.includes("contacts.list"); // returns false
-   * $state.includes("about"); // returns false
+   * \$state.includes("contacts"); // returns true
+   * \$state.includes("contacts.details"); // returns true
+   * \$state.includes("contacts.details.item"); // returns true
+   * \$state.includes("contacts.list"); // returns false
+   * \$state.includes("about"); // returns false
    *
-   * // Using relative names (. and {{{^}}}), typically from a template
+   * // Using relative names (. and {{{^}}}, typically from a template
    * // E.g. from the 'contacts.details' template
-   * div ng-class="{highlighted: $state.includes('.item')}" Item /div
+   * div ng-class="{highlighted: \$state.includes('.item')}" Item /div
+   * </pre>
    *
    * Basic globbing patterns:
-   * $state.$current.name = 'contacts.details.item.url';
+   * <pre>
+   * \$state.\$current.name = 'contacts.details.item.url';
    *
-   * $state.includes("*.details.*.*"); // returns true
-   * $state.includes("*.details.**"); // returns true
-   * $state.includes("**.item.**"); // returns true
-   * $state.includes("*.details.item.url"); // returns true
-   * $state.includes("*.details.*.url"); // returns true
-   * $state.includes("*.details.*"); // returns false
-   * $state.includes("item.**"); // returns false
+   * \$state.includes("*.details.*.*"); // returns true
+   * \$state.includes("*.details.**"); // returns true
+   * \$state.includes("**.item.**"); // returns true
+   * \$state.includes("*.details.item.url"); // returns true
+   * \$state.includes("*.details.*.url"); // returns true
+   * \$state.includes("*.details.*"); // returns false
+   * \$state.includes("item.**"); // returns false
+   * </pre>
    *
    * @param state A partial name, relative name, or glob pattern
    * to be searched for within the current state name.
@@ -671,29 +681,33 @@ trait StateService extends js.Object {
    * Example:
    * Partial and relative names
    *
-   * $state.$current.name = 'contacts.details.item';
+   * <pre>
+   * \$state.\$current.name = 'contacts.details.item';
    *
    * // Using partial names
-   * $state.includes("contacts"); // returns true
-   * $state.includes("contacts.details"); // returns true
-   * $state.includes("contacts.details.item"); // returns true
-   * $state.includes("contacts.list"); // returns false
-   * $state.includes("about"); // returns false
+   * \$state.includes("contacts"); // returns true
+   * \$state.includes("contacts.details"); // returns true
+   * \$state.includes("contacts.details.item"); // returns true
+   * \$state.includes("contacts.list"); // returns false
+   * \$state.includes("about"); // returns false
    *
    * // Using relative names (. and {{{^}}}), typically from a template
    * // E.g. from the 'contacts.details' template
-   * div ng-class="{highlighted: $state.includes('.item')}" Item /div
+   * div ng-class="{highlighted: \$state.includes('.item')}" Item /div
+   * </pre>
    *
    * Basic globbing patterns:
-   * $state.$current.name = 'contacts.details.item.url';
+   * <pre>
+   * \$state.\$current.name = 'contacts.details.item.url';
    *
-   * $state.includes("*.details.*.*"); // returns true
-   * $state.includes("*.details.**"); // returns true
-   * $state.includes("**.item.**"); // returns true
-   * $state.includes("*.details.item.url"); // returns true
-   * $state.includes("*.details.*.url"); // returns true
-   * $state.includes("*.details.*"); // returns false
-   * $state.includes("item.**"); // returns false
+   * \$state.includes("*.details.*.*"); // returns true
+   * \$state.includes("*.details.**"); // returns true
+   * \$state.includes("**.item.**"); // returns true
+   * \$state.includes("*.details.item.url"); // returns true
+   * \$state.includes("*.details.*.url"); // returns true
+   * \$state.includes("*.details.*"); // returns false
+   * \$state.includes("item.**"); // returns false
+   * </pre>
    *
    * @param state A partial name, relative name, or glob pattern
    * to be searched for within the current state name.
@@ -713,15 +727,15 @@ trait StateService extends js.Object {
    * tested for strict equality against the current active params object, so all params must match with none missing and no extras.
    *
    * Example:
-   * $state.$current.name = 'contacts.details.item';
+   * \$state.\$current.name = 'contacts.details.item';
    *
    * // absolute name
-   * $state.is('contact.details.item'); // returns true
-   * $state.is(contactDetailItemStateObject); // returns true
+   * \$state.is('contact.details.item'); // returns true
+   * \$state.is(contactDetailItemStateObject); // returns true
    *
    * // relative name (. and {{{^}}}), typically from a template
    * // E.g. from the 'contacts.details' template
-   * div ng-class="{highlighted: $state.is('.item')}" Item /div
+   * div ng-class="{highlighted: \$state.is('.item')}" Item /div
    *
    * @param state state name (absolute or relative) you'd like to check.
    * @param params A param object, e.g. `{sectionId: section.id}`, that you'd like
@@ -740,15 +754,15 @@ trait StateService extends js.Object {
    * tested for strict equality against the current active params object, so all params must match with none missing and no extras.
    *
    * Example:
-   * $state.$current.name = 'contacts.details.item';
+   * \$state.\$current.name = 'contacts.details.item';
    *
    * // absolute name
-   * $state.is('contact.details.item'); // returns true
-   * $state.is(contactDetailItemStateObject); // returns true
+   * \$state.is('contact.details.item'); // returns true
+   * \$state.is(contactDetailItemStateObject); // returns true
    *
    * // relative name (. and {{{^}}}), typically from a template
    * // E.g. from the 'contacts.details' template
-   * div ng-class="{highlighted: $state.is('.item')}" Item /div
+   * div ng-class="{highlighted: \$state.is('.item')}" Item /div
    *
    * @param state state object you'd like to check.
    * @param params A param object, e.g. `{sectionId: section.id}`, that you'd like
@@ -766,7 +780,7 @@ trait StateService extends js.Object {
    * A url generation method that returns the compiled url for the given state populated with the given params.
    *
    * Example:
-   * expect($state.href("about.person", { person: "bob" })).toEqual("/about/bob");
+   * expect(\$state.href("about.person", { person: "bob" })).toEqual("/about/bob");
    *
    * @param state The state name you'd like to generate a url from.
    * @param params An object of parameter values to fill the state's required parameters.
@@ -779,7 +793,7 @@ trait StateService extends js.Object {
    * A url generation method that returns the compiled url for the given state populated with the given params.
    *
    * Example:
-   * expect($state.href("about.person", { person: "bob" })).toEqual("/about/bob");
+   * expect(\$state.href("about.person", { person: "bob" })).toEqual("/about/bob");
    *
    * @param state The state object you'd like to generate a url from.
    * @param params An object of parameter values to fill the state's required parameters.
