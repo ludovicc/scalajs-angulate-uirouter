@@ -41,7 +41,8 @@ lazy val tests = project.
     publishLocal := {},
     scalacOptions ++= angulateDebugFlags,
     scalaJSStage := FastOptStage,
-    //jsEnv in Test := PhantomJSEnv("phantomjs" , Seq("--remote-debugger-port=9000")).value,
+    //jsEnv in Test := PhantomJSEnv("phantomjs" , Seq("--remote-debugger-port=9000","--remote-debugger-autorun=true")).value,
+    //jsEnv in Test := PhantomJSEnv("phantomjs" , Seq("--debug=true")).value,
     jsEnv in Test := PhantomJSEnv().value,
     testFrameworks += new TestFramework("utest.runner.Framework"),
     libraryDependencies ++= Seq(
@@ -51,5 +52,6 @@ lazy val tests = project.
     jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js",
     jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-locale_en.js" dependsOn "angular.min.js",
     //jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-mocks.js" dependsOn "angular.min.js",
-    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js"
+    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js" dependsOn "angular.min.js"
+    //jsDependencies += "org.webjars" % "ionic" % "1.0.0-beta.14" / "ionic-angular.min.js" dependsOn "angular.min.js"
   )

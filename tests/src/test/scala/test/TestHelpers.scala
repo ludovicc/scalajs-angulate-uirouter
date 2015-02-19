@@ -1,10 +1,11 @@
 package test
 
-import biz.enef.angular.{ Scope, Module, Angular}
+import biz.enef.angulate.{angular, Scope, Module}
 
 import scala.scalajs.js
 import scala.scalajs.js.UndefOr
 import js.Dynamic.literal
+import Module.RichModule
 
 object TestHelpers {
 
@@ -16,8 +17,8 @@ object TestHelpers {
    * @tparam T
    * @return
    */
-  def injection[T](name: String)(implicit module: Module) : T =
-    Angular().injector(js.Array("ng","ui.router",module.name)).get(name).asInstanceOf[T]
+  def injection[T](name: String)(implicit module: RichModule) : T =
+    angular.injector(js.Array("ng","ui.router",module.name)).get(name).asInstanceOf[T]
 
   /**
    * Checks that the specified value is neither null nor undefined.
@@ -33,7 +34,7 @@ object TestHelpers {
    * @param module
    * @tparam T the scope type
    */
-  def controller[T](name: String)(implicit module: Module) : T = {
+  def controller[T](name: String)(implicit module: RichModule) : T = {
     val $controller = injection[js.Function2[String,js.Object,js.Any]]("$controller")
     val $rootScope = injection[Scope]("$rootScope")
     val scope = $rootScope.$new(false)

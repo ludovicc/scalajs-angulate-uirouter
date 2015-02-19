@@ -1,7 +1,7 @@
 package angulate.uirouter
 
-import biz.enef.angular.AnnotatedFunction
-import biz.enef.angular.core.QPromise
+import biz.enef.angulate.AnnotatedFunction
+import biz.enef.angulate.core.QPromise
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSBracketAccess
@@ -391,6 +391,8 @@ object State {
   import js.Dynamic.literal
   import js.JSConverters._
 
+  private[this] val none = new AnnotatedFunction(js.Array())
+
   def apply(url: String, isAbstract: Boolean = false,
            template: String = null,
            templateFn: js.Function1[js.Object, String] = null,
@@ -405,8 +407,8 @@ object State {
            resolve: js.Dictionary[js.Any] = null,
            params: js.Dictionary[js.Any] = null,
            views: Map[String, View] = Map.empty,
-           onEnter: AnnotatedFunction = null,
-           onExit: AnnotatedFunction = null,
+           onEnter: AnnotatedFunction = none,
+           onExit: AnnotatedFunction = none,
            reloadOnSearch: Boolean = true,
            data: js.Object = null): State = {
 
@@ -429,8 +431,8 @@ object State {
            resolve: js.Dictionary[js.Any] = null,
            params: js.Dictionary[js.Any] = null,
            views: Map[String, View] = null,
-           onEnter: AnnotatedFunction = null,
-           onExit: AnnotatedFunction = null,
+           onEnter: AnnotatedFunction = none,
+           onExit: AnnotatedFunction = none,
            reloadOnSearch: Boolean = true,
            data: T = null): TypedState[T] = {
 
@@ -452,8 +454,8 @@ object State {
     if (resolve != null) out.resolve = resolve
     if (params != null) out.params = params
     if (views != null) out.views = views.toJSDictionary
-    if (onEnter != null) out.onEnter = onEnter.inlineArrayAnnotatedFn
-    if (onExit != null) out.onExit = onExit.inlineArrayAnnotatedFn
+    if (onEnter != none) out.onEnter = onEnter.inlineArrayAnnotatedFn
+    if (onExit != none) out.onExit = onExit.inlineArrayAnnotatedFn
     if (!reloadOnSearch) out.reloadOnSearch = reloadOnSearch
     if (data != null) out.data = data
 

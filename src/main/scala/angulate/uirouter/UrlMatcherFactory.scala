@@ -1,7 +1,6 @@
 package angulate.uirouter
 
 import scala.scalajs.js
-import scala.scalajs.js.RegExp
 import scala.scalajs.js.annotation.JSName
 
 // Some code derived from scalajs-angular
