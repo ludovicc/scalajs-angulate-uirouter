@@ -10,7 +10,7 @@ import scala.scalajs.js
  */
 trait Template extends js.Object {
 
-  /**string template or function to load via [[TemplateFactory.fromString()]] */
+  /** string template or function to load via [[TemplateFactory.fromString()]] */
   var template: js.Any = js.native
 
   /** url to load or a function returning the url to load via [[TemplateFactory.fromUrl()]] */
@@ -37,7 +37,7 @@ object Template {
 }
 
 /**
- * $templateFactory Service. Manages loading of templates.
+ * \$templateFactory Service. Manages loading of templates.
  */
 trait TemplateFactory extends js.Object {
 

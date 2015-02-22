@@ -590,7 +590,7 @@ trait StateService extends js.Object {
    *
    * Possible success values:
    *
-   * - $state.current
+   * - \$state.current
    *
    * Possible rejection values:
    *
@@ -620,7 +620,7 @@ trait StateService extends js.Object {
    *
    * @param to State name.
    * @param toParams A map of the parameters that will be sent to the state,
-   * will populate $stateParams.
+   * will populate \$stateParams.
    * @param options State options
    * @return A promise representing the state of the new transition. See [[StateService.go()]]
    */

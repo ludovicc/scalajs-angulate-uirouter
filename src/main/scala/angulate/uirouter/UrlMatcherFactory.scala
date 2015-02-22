@@ -69,9 +69,9 @@ object UrlMatcher {
 }
 
 /**
- * $urlMatcherFactory: Factory for UrlMatcher instances.
+ * \$urlMatcherFactory: Factory for UrlMatcher instances.
  *
- * The factory is also available to providers under the name $urlMatcherFactoryProvider.
+ * The factory is also available to providers under the name \$urlMatcherFactoryProvider.
  */
 trait UrlMatcherFactory extends js.Object {
 
@@ -123,7 +123,7 @@ trait UrlMatcherFactory extends js.Object {
    * @param definition The type definition
    * @param definitionFn A function that is injected before the app runtime starts. The result of this function is merged into
    *                     the existing definition. See Type for information on the values accepted.
-   * @return Returns $urlMatcherFactoryProvider.
+   * @return Returns \$urlMatcherFactoryProvider.
    */
   @JSName("type")
   def defineType(name: String, definition: Type, definitionFn: js.Function = null): UrlMatcherFactory = js.native

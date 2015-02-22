@@ -23,12 +23,12 @@ object View {
 }
 
 /**
- * $view service
+ * \$view service
  */
 trait ViewService extends js.Object {
 
   /**
-   * $view.load('full.viewName', { template: ..., controller: ..., resolve: ..., async: false, params: ... })
+   * \$view.load('full.viewName', { template: ..., controller: ..., resolve: ..., async: false, params: ... })
    */
   def load(name: String, options: js.Dictionary[js.Any]): Unit = js.native
 
