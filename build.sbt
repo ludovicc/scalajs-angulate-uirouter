@@ -45,13 +45,10 @@ lazy val tests = project.
     //jsEnv in Test := PhantomJSEnv("phantomjs" , Seq("--debug=true")).value,
     jsEnv in Test := PhantomJSEnv().value,
     testFrameworks += new TestFramework("utest.runner.Framework"),
-    libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "utest" % "0.3.0" % "test",
-      "com.lihaoyi" %%% "scalatags" % "0.4.4"),
+    libraryDependencies += "com.lihaoyi" %%% "utest" % "0.3.0" % "test",
     jsDependencies += RuntimeDOM,
-    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js",
-    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-locale_en.js" dependsOn "angular.min.js",
+    jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular.min.js" % "test",
+    jsDependencies += ("org.webjars" % "angularjs" % "1.3.8" / "angular-locale_en.js"  dependsOn "angular.min.js") % "test",
     //jsDependencies += "org.webjars" % "angularjs" % "1.3.8" / "angular-mocks.js" dependsOn "angular.min.js",
-    jsDependencies += "org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js" dependsOn "angular.min.js"
-    //jsDependencies += "org.webjars" % "ionic" % "1.0.0-beta.14" / "ionic-angular.min.js" dependsOn "angular.min.js"
+    jsDependencies += ("org.webjars" % "angular-ui-router" % "0.2.13" / "angular-ui-router.min.js" dependsOn "angular.min.js") % "test"
   )

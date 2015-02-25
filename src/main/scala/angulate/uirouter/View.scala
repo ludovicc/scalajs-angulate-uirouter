@@ -14,11 +14,10 @@ trait View extends js.Object {
 }
 
 object View {
+  import js.Dynamic.literal
+
   def apply(templateUrl: String, controller: String): View = {
-    val out = new js.Object().asInstanceOf[View]
-    out.templateUrl = templateUrl
-    out.controller = controller
-    out
+    literal(templateUrl = templateUrl, controller = controller).asInstanceOf[View]
   }
 }
 

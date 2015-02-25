@@ -4,7 +4,7 @@ import biz.enef.angulate.AnnotatedFunction
 import biz.enef.angulate.core.QPromise
 
 import scala.scalajs.js
-import scala.scalajs.js.annotation.JSBracketAccess
+import scala.scalajs.js.annotation.{JSName, JSBracketAccess}
 
 // Some code derived from scalajs-angular
 // Copyright greencatsoft.com under an Apache2 license
@@ -459,6 +459,8 @@ object State {
     if (!reloadOnSearch) out.reloadOnSearch = reloadOnSearch
     if (data != null) out.data = data
 
+    js.Dynamic.global.console.log(out)
+
     out.asInstanceOf[TypedState[T]]
   }
 
@@ -470,30 +472,30 @@ trait StateOptions extends js.Object {
    * {boolean=true|string=} - If `true` will update the url in the location bar, if `false`
    * will not. If string, must be `"replace"`, which will update url and also replace last history record.
    */
-  var `location?`: js.Any = js.native
+  @JSName("location?") var isLocation: js.Any = js.native
 
   /**
    * {boolean=true}, If `true` will inherit url parameters from current url.
    */
-  var `inherit?`: Boolean = js.native
+  @JSName("inherit?") var isInherit: Boolean = js.native
 
   /**
    * {object=\$state.\$current}, When transitioning with relative path (e.g '{{{^}}}'),
    *    defines which state to be relative from.
    */
-  var `relative?`: State = js.native
+  @JSName("relative?") var isRelative: State = js.native
 
   /**
    * {boolean=true}, If `true` will broadcast \$stateChangeStart and \$stateChangeSuccess events.
    */
-  var `notify?`: Boolean = js.native
+  @JSName("notify?") var isNotify: Boolean = js.native
 
   /**
    * (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params
    * have not changed, aka a reload of the same state. It differs from reloadOnSearch because you'd
    * use this when you want to force a reload when *everything* is the same, including search params.
    */
-  var `reload?`: Boolean = js.native
+  @JSName("reload?") var isReload: Boolean = js.native
 }
 
 object StateOptions {
@@ -505,7 +507,7 @@ object StateOptions {
 
     val out = literal(location = location, inherit = inherit, relative = relative, notify = notify, reload = reload).asInstanceOf[StateOptions]
 
-    if (locationStr != "") out.`location?` = locationStr
+    if (locationStr != "") out.isLocation = locationStr
     out
   }
 }
