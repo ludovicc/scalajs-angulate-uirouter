@@ -1,5 +1,7 @@
 package angulate.uirouter
 
+import biz.enef.angulate.core.ProvidedService
+
 import scala.scalajs.js
 
 // Some code derived from scalajs-angular
@@ -24,7 +26,7 @@ object View {
 /**
  * \$view service
  */
-trait ViewService extends js.Object {
+trait ViewService extends js.Object with ProvidedService {
 
   /**
    * \$view.load('full.viewName', { template: ..., controller: ..., resolve: ..., async: false, params: ... })

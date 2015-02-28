@@ -28,7 +28,7 @@ object StateTest extends TestSuite {
     'StateProvider-{
       'singleState-{
 
-        val $state = js.Dynamic.global.angular.element(dom.document.body).injector().get("$state").asInstanceOf[StateService]
+        val $state = angular.element(dom.document.body).injector().get[StateService]("$state")
         val url = $state.get("home").url
         assert(url == "/xx")
       }

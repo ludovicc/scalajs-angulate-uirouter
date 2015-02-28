@@ -1,7 +1,7 @@
 package angulate.uirouter
 
 import biz.enef.angulate.AnnotatedFunction
-import biz.enef.angulate.core.QPromise
+import biz.enef.angulate.core.{ProvidedService, QPromise}
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.{JSName, JSBracketAccess}
@@ -472,30 +472,30 @@ trait StateOptions extends js.Object {
    * {boolean=true|string=} - If `true` will update the url in the location bar, if `false`
    * will not. If string, must be `"replace"`, which will update url and also replace last history record.
    */
-  @JSName("location?") var isLocation: js.Any = js.native
+  var location: js.Any = js.native
 
   /**
    * {boolean=true}, If `true` will inherit url parameters from current url.
    */
-  @JSName("inherit?") var isInherit: Boolean = js.native
+  var inherit: Boolean = js.native
 
   /**
    * {object=\$state.\$current}, When transitioning with relative path (e.g '{{{^}}}'),
    *    defines which state to be relative from.
    */
-  @JSName("relative?") var isRelative: State = js.native
+  var relative: State = js.native
 
   /**
    * {boolean=true}, If `true` will broadcast \$stateChangeStart and \$stateChangeSuccess events.
    */
-  @JSName("notify?") var isNotify: Boolean = js.native
+  @JSName("notify") var notifyStateChanges: Boolean = js.native
 
   /**
    * (v0.2.5) - {boolean=false}, If `true` will force transition even if the state or params
    * have not changed, aka a reload of the same state. It differs from reloadOnSearch because you'd
    * use this when you want to force a reload when *everything* is the same, including search params.
    */
-  @JSName("reload?") var isReload: Boolean = js.native
+  var reload: Boolean = js.native
 }
 
 object StateOptions {
@@ -507,7 +507,7 @@ object StateOptions {
 
     val out = literal(location = location, inherit = inherit, relative = relative, notify = notify, reload = reload).asInstanceOf[StateOptions]
 
-    if (locationStr != "") out.isLocation = locationStr
+    if (locationStr != "") out.location = locationStr
     out
   }
 }
@@ -554,7 +554,7 @@ object StateTransitionRejection {
  * between them. It also provides interfaces to ask for current state or even states
  * you're coming from.
  */
-trait StateService extends js.Object {
+trait StateService extends js.Object with ProvidedService {
 
   /**
    * Convenience method for transitioning to a new state. `\$state.go` calls
